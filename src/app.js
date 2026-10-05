@@ -8,6 +8,7 @@ const requestLogger = require('./middleware/requestLogger');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health.routes');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.json({ limit: '10kb' }));
 
 // ---- Routes ----
 app.use('/health', healthRoutes);
+app.use('/api/v1/user', userRoutes);
 
 // ---- Fallbacks (must be last) ----
 app.use(notFound); // no route matched -> 404
