@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contain secrets)
+.env
+.env.*
+!.env.example
+
+# Logs: ignore real logs, keep only the sample as evidence
+logs/*
+!logs/sample.log
+npm-debug.log*
+
+# Vercel
+.vercel
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Tooling
+.claude/
+CLAUDE.md
