@@ -15,7 +15,7 @@ const signupRules = [
     .isString().withMessage('Username must be a string').bail()
     .trim()
     .isLength({ min: 3, max: 30 }).withMessage('Username must be 3-30 characters')
-    // Only safe characters: this also means there is nothing to HTML-escape.
+    // Only safe characters, so usernames can't contain spaces or symbols like < > or quotes.
     .matches(/^[A-Za-z0-9_.-]+$/).withMessage('Username may only contain letters, numbers, _ . and -'),
 
   body('email')
@@ -32,7 +32,7 @@ const signupRules = [
     .isLength({ min: 8, max: PASSWORD_MAX }).withMessage(`Password must be 8-${PASSWORD_MAX} characters`)
     .matches(/[A-Za-z]/).withMessage('Password must contain at least one letter')
     .matches(/\d/).withMessage('Password must contain at least one number'),
-  // Note: passwords are never trimmed or escaped, because that would change the password.
+  // Note: passwords are never trimmed, because that would change the password.
 
   // Reject any field we did not define above (e.g. someone trying to send "role": "admin").
   checkExact([], { message: 'Unknown fields are not allowed' }),
