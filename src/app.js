@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const config = require('./config/env');
 const requestLogger = require('./middleware/requestLogger');
 const { apiLimiter } = require('./middleware/rateLimiters');
+const ensureDb = require('./middleware/ensureDb');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health.routes');
@@ -42,8 +43,10 @@ app.use(express.json({ limit: '10kb' }));
 // ---- Routes ----
 app.use('/health', healthRoutes);
 
-// General rate limit for everything under /api (signup/login also have stricter limits).
-app.use('/api', apiLimiter);
+// Everything under /api: general rate limit first (signup/login also have stricter limits),
+// then make sure the database is connected. The limiter goes first so blocked requests
+// never cost a database connection.
+app.use('/api', apiLimiter, ensureDb);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/emp', employeeRoutes);
 
